@@ -8,7 +8,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 $CONFIG['full_name'] = "Banking Facilities";
 $CONFIG['inst_name'] = "Banking";
-$CONFIG['inst_managed_by'] = "Koding Karo";
+$CONFIG['inst_managed_by'] = "";
 $CONFIG['inst_address1'] = "Noida India";
 $CONFIG['inst_address2'] = "Noida UP India";
 $CONFIG['inst_contact'] = "8581843939";

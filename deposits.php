@@ -70,15 +70,21 @@
                             if ($search_by == 'email' or $search_by == 'id' or $search_by == 'reg_no' or $search_by == 'phone') {
                                 $sql .= " $search_by = '$search_text'";
                             }
-                            if ($search_by == 'father_name') {
-                                $sql .= " $search_by like '%$search_text%'";
+                        }
+                        if (!empty($sql)) {
+                            $member_data = direct_sql($sql, 'get');
+
+                            if ($member_data['status'] == 'success') {
+                                $data_member = $member_data['data'];
+                                // print_r($data_member);
                             }
                         }
+
                         ?>
 
 
                         <div class="container">
-                            <form id="update_frm" method="POST">
+                            <form id="update_frm" action="update_frm">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <h2>Applicant Details</h2>
@@ -110,7 +116,7 @@
                                             <div class="col-md-6">
                                                 <label for="entry_date">Date of Entry</label>
                                                 <input class="form-control border-warning" type="date" name="entry_date"
-                                                    id="entry_date">
+                                                    id="entry_date" value="<?= date('Y-m-d'); ?>">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="folio_no">Folio No</label>
@@ -127,34 +133,37 @@
                                             <div class="col-md-6">
                                                 <label for="membership_name">Membership Name</label>
                                                 <input type="text" class="form-control border-warning"
-                                                    name="membership_name" id="membership_name">
+                                                    name="membership_name" value="<?= $data_member[0]['name'] ?>"
+                                                    id="membership_name">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="reg_no">Membership Code No.</label>
                                                 <input class="form-control border-warning" type="text" name="reg_no"
-                                                    id="reg_no">
+                                                    id="reg_no" value="<?= $data_member[0]['reg_no'] ?>">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="name">Name</label>
                                                 <input class="form-control border-warning" type="text" name="name"
-                                                    id="name">
+                                                    id="name" value="<?= $data_member[0]['name'] ?>">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="father_name">Father Name</label>
                                                 <input class="form-control border-warning" type="text"
-                                                    name="father_name" id="father_name">
+                                                    name="father_name" id="father_name"
+                                                    value="<?= $data_member[0]['father_name'] ?>">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="address">Address</label>
                                                 <textarea class="form-control border-warning" cols="2" rows="2"
-                                                    name="address" id="address"></textarea>
+                                                    name="address"
+                                                    id="address"><?= $data_member[0]['permanent_address'] ?></textarea>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="dob">DOB</label>
                                                 <input class="form-control border-warning" type="date" name="dob"
-                                                    id="dob">
+                                                    id="dob" value="<?= $data_member[0]['dob']; ?>">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="age">Age</label>
@@ -164,12 +173,12 @@
                                             <div class="col-md-6">
                                                 <label for="pincode">PIN</label>
                                                 <input class="form-control border-warning" type="text" name="pincode"
-                                                    id="pincode">
+                                                    id="pincode" value="<?= $data_member[0]['pincode'] ?>">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="phone">Phone</label>
                                                 <input class="form-control border-warning" type="tel" name="phone"
-                                                    id="phone">
+                                                    id="phone" value="<?= $data_member[0]['phone'] ?>">
                                             </div>
                                         </div>
 
@@ -250,6 +259,7 @@
                                                     <option value="monthly">Monthly</option>
                                                     <option value="yearly">Yearly</option>
                                                     <option value="single">Single</option>
+                                                    <option value="daily">Daily</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
