@@ -1,0 +1,16 @@
+/*------- CUSTOM CSS FOR Admin Dashboard Pro---------*/
+.content {
+    min-height: 250px;
+    padding: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+label.error {
+    color: #ff0044;
+    font-size: 11px;
+}
+
+.delete_btn {
+    cursor: pointer;
+}
