@@ -7,7 +7,7 @@ $con = mysqli_connect($host_name, $db_user, $db_password, $db_name)
 // === OFFERPLANT MASTER FUNTION FOR EVERY WHERE ==== //
 
 //  INSERT ( insert_row, insert_data, insert_html )
-// 	UPDATE (update_date, update_multi_data)
+// 	UPDATE (update_data, update_multi_data)
 // 	REMOVE (remove_data, remove_multi_data)
 // 	DELETE (delete_data, delete_multi_data)
 //	FETCH	(get_data, get_all, get_multi_data, get_not, direct_sql)
@@ -41,7 +41,7 @@ function create_table($table_name)
 	  updated_by int(11) DEFAULT NULL
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
-	$res[] = mysqli_query($con, $sql1) or die("Error In Createting Table : " . mysqli_error($con));
+	$res[] = mysqli_query($con, $sql1) or die("Error In Creating Table : " . mysqli_error($con));
 
 	$sql2 = "ALTER TABLE $table_name  ADD PRIMARY KEY (id)";
 	$res[] = mysqli_query($con, $sql2) or die("Error In Assigning Primary Key : " . mysqli_error($con));
@@ -291,9 +291,9 @@ function insert_data($table_name, $ArrayData)
 	global $user_id;
 	global $current_date_time;
 	//echo"<pre>";
-	//print_r($ArrayData);
+	// print_r($ArrayData);
 	// $ArrayData['created_by'] = $user_id;
-	// $ArrayData['created_at'] = $current_date_time;
+	$ArrayData['created_at'] = $current_date_time;
 
 	$columns = implode(", ", array_keys($ArrayData));
 	$escaped_values = array_values($ArrayData);
@@ -363,7 +363,7 @@ function update_data($table_name, $ArrayData, $id, $pkey = 'id')
 	global $current_date_time;
 
 	$ArrayData['updated_at'] = $current_date_time;
-	// $ArrayData['updated_by'] = $user_id;
+	$ArrayData['updated_by'] = $user_id;
 
 	$cols = array();
 	foreach ($ArrayData as $key => $value) {
@@ -1531,4 +1531,48 @@ function date_difference($startDate, $endDate)
 	return ceil(abs($diff / 86400));
 }
 
+function numberToIndianRupees($number)
+{
+	$ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+	$teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+	$tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+	$scales = ['', 'thousand', 'lakh', 'crore'];
+
+	function convertBelowThousand($num, $ones, $teens, $tens)
+	{
+		$result = '';
+		if ($num >= 100) {
+			$result .= $ones[(int) ($num / 100)] . ' hundred ';
+			$num %= 100;
+		}
+		if ($num >= 20) {
+			$result .= $tens[(int) ($num / 10)] . ' ';
+			$num %= 10;
+		}
+		if ($num >= 10) {
+			$result .= $teens[$num - 10] . ' ';
+			return $result;
+		}
+		if ($num > 0) {
+			$result .= $ones[$num] . ' ';
+		}
+		return $result;
+	}
+
+	if ($number === 0)
+		return 'zero';
+
+	$result = '';
+	$i = 0;
+
+	while ($number > 0) {
+		if ($number % 1000 !== 0) {
+			$result = convertBelowThousand($number % 1000, $ones, $teens, $tens) . $scales[$i] . ' ' . $result;
+		}
+		$number = (int) ($number / 1000);
+		$i++;
+	}
+
+	return trim($result);
+}
 ?>

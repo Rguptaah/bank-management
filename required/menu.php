@@ -32,13 +32,31 @@
 				</ul>
 			</li>
 			<li class="treeview">
-				<a href="#"> <i class="fa fa-user-circle"></i> <span>Deposits</span> <span class="pull-right-container">
+				<a href="#"> <i class="fa fa-dollar"></i> <span>Deposits</span> <span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i> </span>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="add_member">Fixed Deposit (FD)</a></li>
 					<li><a href="manage_member">Recurring Deposit (RD)</a></li>
 					<li><a href="deposits">Deposit Report</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#"> <i class="fa fa-list"></i> <span>Plans</span> <span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i> </span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="add_plan">Add Plan</a></li>
+					<li><a href="manage_plans">Manage Plan</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#"> <i class="fa fa-user"></i> <span>Users</span> <span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i> </span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="add_user">Add User</a></li>
+					<!-- <li><a href="manage_user">Manage User</a></li> -->
 				</ul>
 			</li>
 		</ul>

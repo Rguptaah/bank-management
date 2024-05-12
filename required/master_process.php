@@ -152,14 +152,71 @@ if (isset($_GET['task'])) {
 		case "update_member":
 			extract($_POST);
 			$res = update_data('members', $_POST, $_POST['id']);
-			$mem_new = array('id' => $_POST['id'], 'reg_no' => $_POST['reg_no']);
 			$res['url'] = 'manage_member';
 			echo json_encode($res);
 			break;
 
+		case "update_plans":
+			extract($_POST);
+			$res = update_data('plans', $_POST, $_POST['id']);
+			$res['url'] = 'manage_plans';
+			echo json_encode($res);
+			break;
+		case "update_policy":
+			extract($_POST);
+			unset($_POST['name']);
+			unset($_POST['father_name']);
+			unset($_POST['membership_name']);
+			unset($_POST['reg_no']);
+			unset($_POST['address']);
+			unset($_POST['dob']);
+			unset($_POST['pincode']);
+			unset($_POST['phone']);
+			unset($_POST['payment']);
+			$res = update_data('receipt_data', $_POST, $_POST['id']);
+			if ($res['status'] == 'success') {
+				$id = encode('id=' . $_POST['id']);
+				$res['url'] = "receipt?link=$id";
+			} else {
+				$res['url'] = 'deposits';
+			}
+			echo json_encode($res);
+			break;
+		case "changePlans":
+			$selection = $_POST['selection'];
+			$sql = "SELECT * FROM plans where plan_code like '$selection'";
+			$res = direct_sql($sql, 'get');
+			$output = [];
+			if ($res['status'] == 'success') {
+				$output['status'] = $res['status'];
+				$output['data'] = '<option value="" selected disabled>Select Plan</option>';
+				foreach ($res['data'] as $data) {
+					$output['data'] .= '<option value="' . $data['plan_detail'] . '">' . $data['plan_detail'] . '</option>';
+				}
+			} else {
+				$output['status'] = $res['status'];
+			}
+			echo json_encode($output);
+			break;
+
+		case "changeTerms":
+			extract($_POST);
+			$sql = "SELECT * FROM plans where plan_detail like '$selection'";
+			$res = direct_sql($sql, 'get');
+			$output = [];
+			if ($res['status'] == 'success') {
+				$output['status'] = $res['status'];
+				$output['mode'] = '<option value="' . $res['data'][0]['mode'] . '">' . $res['data'][0]['mode'] . '</option>';
+				$output['mis'] = '<option value="' . $res['data'][0]['mis'] . '">' . $res['data'][0]['mis'] . '</option>';
+				$output['term'] = $res['data'][0]['term'];
+			} else {
+				$output['status'] = $res['status'];
+			}
+			echo json_encode($output);
+			break;
+
 		case "cancel_receipt":
 			extract($_POST);
-			//print_r($_POST);
 			$rid = $_POST['receipt_id'];
 			$cancel_remarks = $_POST['cancel_remarks'];
 			$cancel_at = date('Y-m-d h:i:s');

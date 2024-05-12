@@ -2,7 +2,7 @@
 $_POST = post_clean($_POST);
 $_GET = post_clean($_GET);
 if (!isset($_SESSION['initiated'])) {
-  echo "<script> window.location ='master_process?task=logout' </script>";
+  echo "<script> window.location ='login' </script>";
 } else {
   $user_id = $_SESSION['user_id'];
   $udata = get_data('users', $user_id)['data'];

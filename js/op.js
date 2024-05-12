@@ -17,6 +17,76 @@ function checkTime() {
     setTimeout(checkTime, 10000);
   }
 }
+
+// ================= Change fields value A/c to selection ============ //
+$("#plan_code").change(function () {
+  let selection = $(this).find(":selected").val();
+  $.ajax({
+    url: "required/master_process?task=changePlans",
+    type: "POST",
+    data: {
+      selection,
+    },
+    success: function (data) {
+      let obj = JSON.parse(data);
+      if (obj.status === "success") {
+        $("#plan_detail").html(obj.data);
+      }
+    },
+  });
+});
+
+$("#plan_detail").change(function () {
+  let selection = $(this).find(":selected").val();
+  $.ajax({
+    url: "required/master_process?task=changeTerms",
+    type: "POST",
+    data: {
+      selection,
+    },
+    success: function (data) {
+      let obj = JSON.parse(data);
+      if (obj.status === "success") {
+        $("#mode").html(obj.mode);
+        $("#mis").html(obj.mis);
+        $("#term").val(obj.term);
+      }
+    },
+  });
+});
+
+$("#update_policy_btn").click(function () {
+  $("#update_policy_frm").validate();
+  if ($("#update_policy_frm").valid()) {
+    let task = $("#update_policy_frm").attr("action");
+    $(this).attr("disabled", true);
+    $(this).html("Please Wait...");
+    // let payment_mode = $('input[name="payment"]:checked').val();
+    let data = $("#update_policy_frm").serialize();
+    // data += "&payment_mode=" + payment_mode;
+    $.ajax({
+      type: "POST",
+      url: "required/master_process?task=" + task,
+      data: data,
+      success: function (data) {
+        //alert(data);
+        console.log(data);
+        let obj = JSON.parse(data);
+        //$('#update_frm')[0].reset();
+
+        $("#update_policy_btn").html("Save Details");
+        $("#update_policy_btn").removeAttr("disabled");
+        if (obj.url != null) {
+          bootbox.alert(obj.msg, function () {
+            window.location.replace(obj.url);
+          });
+        } else {
+          $.notify(obj.msg, obj.status);
+        }
+      },
+    });
+  }
+});
 //=============CANCEL INVOICE=================//
 $("#cancel_invoice_btn").on("click", function () {
   const student_id = $(this).attr("data-id");
@@ -328,6 +398,36 @@ $("#update_btn").click(function () {
     });
   }
 });
+
+$("#update_plans_btn").click(function () {
+  $("#update_frm").validate();
+  if ($("#update_frm").valid()) {
+    var task = $("#update_frm").attr("action");
+    $(this).attr("disabled", true);
+    $(this).html("Please Wait...");
+    var data = $("#update_frm").serialize();
+    $.ajax({
+      type: "POST",
+      url: "required/master_process?task=" + task,
+      data: data,
+      success: function (data) {
+        console.log(data);
+        var obj = JSON.parse(data);
+
+        $("#update_plans_btn").html("Save Details");
+        $("#update_plans_btn").removeAttr("disabled");
+        if (obj.url != null) {
+          bootbox.alert(obj.msg, function () {
+            window.location.replace(obj.url);
+          });
+        } else {
+          $.notify(obj.msg, obj.status);
+        }
+      },
+    });
+  }
+});
+
 $("#cat_btn").click(function () {
   $("#cat_frm").validate();
 

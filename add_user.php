@@ -1,16 +1,16 @@
-<?php require_once('required/header.php'); ?>
-<?php require_once('required/menu.php');
+<?php require_once ('required/header.php'); ?>
+<?php require_once ('required/menu.php');
 
 if (isset($_GET['link']) and $_GET['link'] != '') {
 	$data = decode($_GET['link']);
 	$id = $data['id'];
 } else {
-	$fee = insert_row('user');
+	$fee = insert_row('users');
 	$id = $fee['id'];
 }
 
 if ($id != '') {
-	$res = get_data('user', $id);
+	$res = get_data('users', $id);
 	if ($res['count'] > 0 and $res['status'] == 'success') {
 		extract($res['data']);
 	}
@@ -53,7 +53,7 @@ if ($id != '') {
 							<input type='hidden' value='<?php echo $id; ?>' name='id'>
 							<div class="form-group">
 								<label>Full name</label>
-								<input class="form-control" required name='full_name' value='<?php echo $full_name; ?>'>
+								<input class="form-control" required name='name' value='<?php echo $name; ?>'>
 							</div>
 							<div class="form-group">
 								<label>User Type </label>
@@ -63,19 +63,19 @@ if ($id != '') {
 							</div>
 							<div class="form-group">
 								<label>User name</label>
-								<input class="form-control" required name='user_name' value='<?php echo $user_name; ?>'>
+								<input class="form-control" required name='username' value='<?php echo $username; ?>'>
 							</div>
 							<div class="form-group">
 								<label>User Password</label>
-								<input class="form-control" required name='user_pass' value='<?php echo $user_pass; ?>'>
+								<input class="form-control" required name='password' value='<?php echo $password; ?>'>
 							</div>
 							<div class="form-group">
 								<label>User Mobile</label>
-								<input class="form-control" required name='user_mobile' value='<?php echo $user_mobile; ?>'>
+								<input class="form-control" required name='phone' value='<?php echo $phone; ?>'>
 							</div>
 							<div class="form-group">
 								<label>User Email</label>
-								<input class="form-control" type='email' name='user_email' value='<?php echo $user_email; ?>'>
+								<input class="form-control" type='email' name='email' value='<?php echo $email; ?>'>
 							</div>
 
 							<div class="form-group">
@@ -115,15 +115,18 @@ if ($id != '') {
 											$id = $row['id'];
 											echo "<tr>";
 											echo "<td>" . $row['user_type'] . "</td>";
-											echo "<td>" . $row['user_name'] . "</td>";
-											echo "<td>" . $row['user_mobile'] . "</td>";
-											echo "<td>" . $row['user_email'] . "</td>";
-									?>
+											echo "<td>" . $row['username'] . "</td>";
+											echo "<td>" . $row['phone'] . "</td>";
+											echo "<td>" . $row['email'] . "</td>";
+											?>
 											<td>
-												<a href='add_user.php?link=<?php echo encode('id=' . $id); ?>' class='fa fa-edit btn btn-info btn-xs'></a>
-												<span class='delete_btn btn btn-danger btn-sm' data-table='user' data-id='<?php echo $id; ?>' data-pkey='id'><i class='fa fa-trash'></i></span>
+												<a href='add_user.php?link=<?php echo encode('id=' . $id); ?>'
+													class='fa fa-edit btn btn-info btn-xs'></a>
+												<span class='delete_btn btn btn-danger btn-sm' data-table='user'
+													data-id='<?php echo $id; ?>' data-pkey='id'><i
+														class='fa fa-trash'></i></span>
 											</td>
-									<?php
+											<?php
 											$i++;
 										}
 									}
@@ -142,4 +145,4 @@ if ($id != '') {
 
 
 
-<?php require_once('required/footer2.php'); ?>
+<?php require_once ('required/footer2.php'); ?>
